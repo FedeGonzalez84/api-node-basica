@@ -49,20 +49,31 @@ app.post('/api/product', (req, res) => {
   product.description = req.body.description;
   //Se almacena en la base de datos y se le pasa un callback para hacer algo
   product.save( (err, productStored) => {
-    if(err){
-      res.status(500).send({message: `Error al almacenar datos: ${err}`});
-    }
+    if(err) res.status(500).send({message: `Error al almacenar datos: ${err}`});
     res.status(200).send({messsage: productStored});
   });
-
 });
 
 app.put('/api/product/:productId', (req, res) => {
-
+  let productId = req.params.productId;
+  Product.findByIdAndUpdate(productId, req.body, (err, productUpdated) => {
+    if(err) return res.status(500).send({message: `Error al actualizar el producto: ${err}`});
+    res.status(200).send({product: productUpdated});
+  });
 });
 
 app.delete('/api/product/:productId',(req, res) =>{
+  let productId = req.params.productId;
+  Product.findById(productId, (err, product) => {
+    if(err) return res.status(500).send({message: `Error al borrar el producto: ${err}`});
+    if(!product) return res.status(404).send({message: 'El producto no existe'});
 
+    product.remove((err, ) =>{
+      if(err) return res.status(500).send({message: `Error al borrar el producto: ${err}`});
+      res.status(200).send({message: 'El producto se ha eliminado corectamente'});
+    });
+
+  });
 });
 //----------------------------------------------------------------------------------------------------
 //Una vez que se establece la conexion a la base de datos, se pregunta
