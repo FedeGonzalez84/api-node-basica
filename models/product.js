@@ -5,9 +5,10 @@ const ProductSchema = mongoose.Schema({
   name: String,
   picture: String,
   price: {type: Number, default:0},
-  cateogory: {type: String, enum: ['computers','phones','accesories'] },
+  category: {type: String, enum: ['computers','phones','accesories'] },
   description: String
 });
 
+//Exporto el modelo generado
 module.exports = mongoose.model('Product', ProductSchema);
 
