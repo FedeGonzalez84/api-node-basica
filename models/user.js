@@ -16,7 +16,7 @@ const UserSchema = new Schema({
 });
 
 //Funcion que se ejecuta antes de almacenar el documento
-UserSchema.pre('save',(next) => {
+UserSchema.pre('save',function (next) {
   let user = this;
   if(!user.isModified('password')) return next();
 
